@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#54204f">
+  <meta name="description" content="สร้างภาพอนุโมทนาบุญที่สวยงามได้ทันทีในเบราว์เซอร์ ข้อมูลและรูปภาพไม่ถูกส่งออกจากอุปกรณ์">
+  <title>วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span><strong>วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์</strong><small>สร้างภาพอนุโมทนาบุญอย่างงดงาม</small></span>
+    </a>
+    <div class="privacy-pill"><span class="privacy-dot"></span>ประมวลผลบนเครื่องของคุณ</div>
+  </header>
+
+  <main id="top" class="page-shell">
+    <section class="intro">
+      <div>
+        <span class="eyebrow">ANUMODANA POSTER MAKER</span>
+        <h1>การสั่งสมบุญ<br><em>นำสุขมาให้</em></h1>
+      </div>
+      <p>ใส่ข้อมูล เลือกภาพ และดาวน์โหลดได้ทันที<br>ไม่ต้องสมัครสมาชิก • ไม่มีรูปถูกอัปโหลดขึ้นเซิร์ฟเวอร์</p>
+    </section>
+
+    <div class="workspace">
+      <aside class="editor-panel" aria-label="เครื่องมือสร้างภาพ">
+        <div class="panel-title">
+          <div><span class="step-number">01</span><h2>เลือกรูปแบบ</h2></div>
+          <span class="autosave" id="saveState">บันทึกอัตโนมัติ</span>
+        </div>
+
+        <div class="template-grid" id="templateGrid">
+          <button class="template-card active" type="button" data-template="classic" aria-pressed="true">
+            <span class="template-preview classic"><i></i></span>
+            <span><strong>ม่วงทอง</strong><small>สุภาพ คลาสสิก</small></span>
+          </button>
+          <button class="template-card" type="button" data-template="dawn" aria-pressed="false">
+            <span class="template-preview dawn"><i></i></span>
+            <span><strong>รุ่งอรุณ</strong><small>อบอุ่น นุ่มนวล</small></span>
+          </button>
+          <button class="template-card" type="button" data-template="royal" aria-pressed="false">
+            <span class="template-preview royal"><i></i></span>
+            <span><strong>ธรรมบริสุทธิ์</strong><small>ขาวมุก ทองอ่อน</small></span>
+          </button>
+        </div>
+
+        <div class="section-heading"><span class="step-number">02</span><h2>ข้อมูลบนภาพ</h2></div>
+        <div class="field">
+          <label for="donor">ชื่อเจ้าภาพ / ผู้ร่วมบุญ</label>
+          <input id="donor" maxlength="120" placeholder="เช่น คุณสมชาย และครอบครัว">
+        </div>
+        <div class="field">
+          <label for="amount">จำนวนเงิน (บาท)</label>
+          <input id="amount" type="number" min="0" step="1" inputmode="numeric" placeholder="0">
+        </div>
+        <div class="fixed-copy" aria-label="ข้อมูลกิจกรรมที่กำหนดไว้">
+          <small>ข้อมูลกิจกรรม • ข้อความตายตัว</small>
+          <strong>ร่วมทำบุญกฐิน ณ วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์</strong>
+          <span>อ.หล่มสัก จ.เพชรบูรณ์ ในวันที่ ๑๖ พฤศจิกายน ๒๕๖๙</span>
+        </div>
+        <div class="fixed-copy account-copy" aria-label="ข้อมูลบัญชีสำหรับร่วมทำบุญออนไลน์">
+          <small>ข้อมูลรับบริจาค • ข้อความตายตัว</small>
+          <strong>ร่วมทำบุญออนไลน์ | Online Donation</strong>
+          <span>ธนาคารทหารไทยธนชาต (ttb) • ชื่อบัญชี: มจร. วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์</span>
+          <b>เลขที่บัญชี / Account No. 356-2-20222-2</b>
+        </div>
+
+        <div class="section-heading"><span class="step-number">03</span><h2>ภาพเจ้าภาพ</h2></div>
+        <label class="upload-zone" for="photo">
+          <input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+          <span class="upload-icon" aria-hidden="true">＋</span>
+          <span><strong>เลือกรูปภาพ</strong><small>JPG, PNG หรือ WEBP • ไม่เกิน 10 MB</small></span>
+        </label>
+        <div class="photo-tools" id="photoTools" hidden>
+          <div class="range-field"><label for="zoom">ขยายภาพ <output id="zoomValue">100%</output></label><input id="zoom" type="range" min="0.8" max="2.8" step="0.01" value="1"></div>
+          <div class="range-field"><label for="photoY">ตำแหน่งแนวตั้ง</label><input id="photoY" type="range" min="-300" max="300" step="1" value="0"></div>
+          <p class="drag-hint">เคล็ดลับ: ลากภาพบนตัวอย่างเพื่อจัดตำแหน่งได้โดยตรง</p>
+        </div>
+        <label class="check-row"><input id="noPhoto" type="checkbox"><span>ไม่แสดงภาพเจ้าภาพ</span></label>
+
+        <details class="effects" open>
+          <summary><span><span class="step-number">04</span>แสงและเอฟเฟ็กต์</span><span class="summary-icon">⌄</span></summary>
+          <div class="effects-body">
+            <div class="range-field"><label for="sparkle">ประกายทอง <output id="sparkleValue">45%</output></label><input id="sparkle" type="range" min="0" max="100" value="45"></div>
+            <div class="range-field"><label for="glow">แสงรัศมี <output id="glowValue">55%</output></label><input id="glow" type="range" min="0" max="100" value="55"></div>
+            <div class="field-row compact">
+              <div class="field"><label for="fontFamily">แบบตัวอักษร</label><select id="fontFamily"><option value="sarabun">ไทยสารบรรณ</option><option value="tahoma">Tahoma</option><option value="sans">Sans Serif</option></select></div>
+              <div class="field"><label for="fontScale">ขนาดตัวอักษร</label><select id="fontScale"><option value="0.9">เล็ก</option><option value="1">พอดี</option><option value="1.1" selected>ใหญ่</option></select></div>
+            </div>
+            <label class="check-row"><input id="thaiDigits" type="checkbox" checked><span>แสดงจำนวนเงินเป็นเลขไทย</span></label>
+          </div>
+        </details>
+
+        <div class="editor-actions">
+          <button id="saveDraft" class="button secondary" type="button">บันทึกแบบร่าง</button>
+          <button id="newDraft" class="button ghost" type="button">เริ่มภาพใหม่</button>
+        </div>
+      </aside>
+
+      <section class="preview-panel" aria-label="ตัวอย่างภาพ">
+        <div class="preview-head">
+          <div><span class="eyebrow">LIVE PREVIEW</span><h2>ตัวอย่างภาพของคุณ</h2></div>
+          <span class="size-chip">1200 × 1500 px</span>
+        </div>
+        <div class="canvas-stage" id="canvasStage">
+          <span class="stage-glow one"></span><span class="stage-glow two"></span>
+          <canvas id="poster" width="1200" height="1500" aria-label="ตัวอย่างโปสเตอร์อนุโมทนาบุญ"></canvas>
+        </div>
+        <div class="preview-actions">
+          <button id="downloadPNG" class="button primary" type="button"><span aria-hidden="true">↓</span> ดาวน์โหลด PNG</button>
+          <button id="copyImage" class="button secondary" type="button">คัดลอกรูปภาพ</button>
+        </div>
+        <p class="privacy-note"><span aria-hidden="true">◉</span> รูปและข้อมูลทั้งหมดประมวลผลภายในอุปกรณ์นี้ ไม่มีการส่งขึ้นเซิร์ฟเวอร์</p>
+
+        <section class="draft-library" aria-labelledby="draftTitle">
+          <div class="library-head"><div><span class="eyebrow">SAVED ON THIS DEVICE</span><h2 id="draftTitle">แบบร่างที่บันทึกไว้</h2></div><button id="clearDrafts" class="link-button" type="button">ล้างทั้งหมด</button></div>
+          <div id="draftList" class="draft-list"><p class="empty-state">ยังไม่มีแบบร่างที่บันทึกไว้</p></div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer><strong>MCU Anumodana Studio</strong><span>สร้างด้วยความเคารพในศรัทธาและความเป็นส่วนตัว</span></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>

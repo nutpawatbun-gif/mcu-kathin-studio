@@ -1,0 +1,10 @@
+{
+  "name": "MCU Anumodana Studio",
+  "short_name": "Anumodana",
+  "description": "สร้างภาพอนุโมทนาบุญบนอุปกรณ์ของคุณ",
+  "lang": "th",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f2f7",
+  "theme_color": "#54204f"
+}
