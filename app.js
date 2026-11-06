@@ -52,9 +52,9 @@ const mcuLogoImage = new Image();
 mcuLogoImage.src = './assets/mcu_logo.png';
 
 const fontStacks = {
-  sarabun: '"TH Sarabun New","TH SarabunPSK","Sarabun","Noto Sans Thai",Tahoma,sans-serif',
-  tahoma: 'Tahoma,"Noto Sans Thai",sans-serif',
-  sans: '"Noto Sans Thai","Leelawadee UI",Arial,sans-serif'
+  sarabun: '"MCU Sarabun","Noto Sans Thai",Tahoma,sans-serif',
+  tahoma: 'Tahoma,"MCU Sarabun","Noto Sans Thai",sans-serif',
+  sans: 'Arial,"MCU Sarabun","Noto Sans Thai",sans-serif'
 };
 
 const themes = {
@@ -139,6 +139,18 @@ function loadPhoto(data) {
 function canvasFont(weight, size) {
   const family = fontStacks[state.fontFamily] || fontStacks.sarabun;
   return `${weight} ${Math.round(size * Number(state.fontScale || 1))}px ${family}`;
+}
+
+async function ensureCanvasFonts() {
+  if (!document.fonts?.load) return;
+  const sample = 'การสั่งสมบุญ ขออนุโมทนาบุญ Online Donation 356-2-20222-2';
+  try {
+    const requests = [400, 500, 600, 700].map(weight => document.fonts.load(`${weight} 48px "MCU Sarabun"`, sample));
+    await Promise.all(requests);
+    await document.fonts.ready;
+  } catch (error) {
+    console.warn('Web font could not be preloaded; using a local fallback.', error);
+  }
 }
 
 function roundedPath(x, y, width, height, radius) {
@@ -930,6 +942,7 @@ function bindPhotoDragging() {
 }
 
 async function initialize() {
+  await ensureCanvasFonts();
   const stored = safeParse(localStorage.getItem(STORAGE_CURRENT), null);
   if (stored?.state) { state = normalizeState(stored.state); currentDraftId = stored.currentDraftId || null; }
   await loadPhoto(state.photoData);
