@@ -147,7 +147,7 @@ function canvasFont(weight, size, scale = selectedFontScale()) {
 
 async function ensureCanvasFonts() {
   if (!document.fonts?.load) return;
-  const sample = 'การสั่งสมบุญ ขออนุโมทนาบุญ Online Donation 356-2-20222-2';
+  const sample = 'การสั่งสมบุญ ขออนุโมทนาบุญ Online Donation 356-2-20222-0';
   try {
     const requests = [400, 500, 600, 700].map(weight => document.fonts.load(`${weight} 48px "MCU TH Sarabun New"`, sample));
     await Promise.all(requests);
@@ -772,7 +772,7 @@ function drawDonationPanel(theme) {
   const accountColor = isRoyal ? '#5b2854' : '#6f1f68';
   centerText('ร่วมทำบุญออนไลน์ | Online Donation', 600, 1337, 820, 32, headingColor, '700');
   centerText('ธนาคารทหารไทยธนชาต (ttb)  •  ชื่อบัญชี: มจร. วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, 1372, 880, 25, detailColor, '600');
-  centerText('เลขที่บัญชี / Account No.  356-2-20222-2', 600, 1407, 820, 36, accountColor, '700');
+  centerText('เลขที่บัญชี / Account No.  356-2-20222-0', 600, 1407, 820, 36, accountColor, '700');
 }
 
 function drawGlow() {
