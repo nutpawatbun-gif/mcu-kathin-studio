@@ -7,9 +7,9 @@
   <meta name="description" content="สร้างภาพอนุโมทนาบุญที่สวยงามได้ทันทีในเบราว์เซอร์ ข้อมูลและรูปภาพไม่ถูกส่งออกจากอุปกรณ์">
   <title>วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์</title>
   <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="preload" href="./assets/fonts/thsarabunnew-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/thsarabunnew-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/fonts/sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./assets/fonts/sarabun-500-thai.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./assets/fonts/sarabun-600-thai.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/fonts/sarabun-700-thai.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./style.css">
 </head>
@@ -94,7 +94,7 @@
             <div class="range-field"><label for="glow">แสงรัศมี <output id="glowValue">55%</output></label><input id="glow" type="range" min="0" max="100" value="55"></div>
             <div class="field-row compact">
               <div class="field"><label for="fontFamily">แบบตัวอักษร</label><select id="fontFamily"><option value="sarabun">ไทยสารบรรณ</option><option value="tahoma">Tahoma</option><option value="sans">Sans Serif</option></select></div>
-              <div class="field"><label for="fontScale">ขนาดตัวอักษร</label><select id="fontScale"><option value="0.9">เล็ก</option><option value="1" selected>พอดี</option><option value="1.1">ใหญ่</option></select></div>
+              <div class="field"><label for="fontScale">ขนาดตัวอักษร</label><select id="fontScale"><option value="0.9">เล็ก</option><option value="1">พอดี</option><option value="1.1" selected>ใหญ่</option></select></div>
             </div>
             <label class="check-row"><input id="thaiDigits" type="checkbox" checked><span>แสดงจำนวนเงินเป็นเลขไทย</span></label>
           </div>

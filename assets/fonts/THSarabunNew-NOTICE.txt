@@ -1,0 +1,16 @@
+TH Sarabun New
+
+Copyright (c) 2010-2011 by Software Industry Promotion Agency
+(Public Organization) (SIPA). All rights reserved.
+Created by Suppakit CHALERMLARP.
+
+This font is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option)
+any later version.
+
+The font includes a special exception allowing documents to embed the
+font or unaltered portions of the font without causing the document itself
+to be covered by the GNU General Public License.
+
+The full GNU General Public License version 2 is included in GPL-2.0.txt.

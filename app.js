@@ -27,7 +27,7 @@ const freshState = () => ({
   sparkle: 45,
   glow: 55,
   fontFamily: 'sarabun',
-  fontScale: 1,
+  fontScale: 1.1,
   thaiDigits: true
 });
 
@@ -52,9 +52,9 @@ const mcuLogoImage = new Image();
 mcuLogoImage.src = './assets/mcu_logo.png';
 
 const fontStacks = {
-  sarabun: '"MCU Sarabun","Noto Sans Thai",Tahoma,sans-serif',
-  tahoma: 'Tahoma,"MCU Sarabun","Noto Sans Thai",sans-serif',
-  sans: 'Arial,"MCU Sarabun","Noto Sans Thai",sans-serif'
+  sarabun: '"MCU TH Sarabun New","TH Sarabun New","TH SarabunPSK","MCU Sarabun","Noto Sans Thai",Tahoma,sans-serif',
+  tahoma: 'Tahoma,"MCU TH Sarabun New","MCU Sarabun","Noto Sans Thai",sans-serif',
+  sans: 'Arial,"MCU TH Sarabun New","MCU Sarabun","Noto Sans Thai",sans-serif'
 };
 
 const themes = {
@@ -149,7 +149,7 @@ async function ensureCanvasFonts() {
   if (!document.fonts?.load) return;
   const sample = 'การสั่งสมบุญ ขออนุโมทนาบุญ Online Donation 356-2-20222-2';
   try {
-    const requests = [400, 500, 600, 700].map(weight => document.fonts.load(`${weight} 48px "MCU Sarabun"`, sample));
+    const requests = [400, 500, 600, 700].map(weight => document.fonts.load(`${weight} 48px "MCU TH Sarabun New"`, sample));
     await Promise.all(requests);
     await document.fonts.ready;
   } catch (error) {
@@ -311,21 +311,21 @@ function drawHeader(theme) {
     ctx.fillRect(0, 0, W, 150);
   }
   const hasLogo = mcuLogoImage.naturalWidth > 0;
-  const textX = hasLogo ? 650 : W / 2;
+  const textX = hasLogo ? 660 : W / 2;
   if (hasLogo) {
-    const logoHeight = 92;
+    const logoHeight = 112;
     const logoWidth = logoHeight * mcuLogoImage.naturalWidth / mcuLogoImage.naturalHeight;
     ctx.save();
     ctx.globalAlpha = .98;
     ctx.shadowColor = state.template === 'royal' ? 'rgba(158,116,45,.24)' : 'rgba(255,255,255,.88)';
     ctx.shadowBlur = 10;
     ctx.shadowOffsetY = 2;
-    ctx.drawImage(mcuLogoImage, 190, 10, logoWidth, logoHeight);
+    ctx.drawImage(mcuLogoImage, 265, 8, logoWidth, logoHeight);
     ctx.restore();
   }
   const color = theme.ink;
-  centerText('มหาวิทยาลัยมหาจุฬาลงกรณราชวิทยาลัย', textX, 40, hasLogo ? 760 : 1050, 37, color, '700', false, 1);
-  centerText('วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', textX, 88, hasLogo ? 790 : 1060, 40, color, '700', false, 1);
+  centerText('มหาวิทยาลัยมหาจุฬาลงกรณราชวิทยาลัย', textX, 45, hasLogo ? 820 : 1050, 42, color, '700');
+  centerText('วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', textX, 96, hasLogo ? 840 : 1060, 45, color, '700');
   if (state.template === 'classic') return;
   const line = ctx.createLinearGradient(140, 0, 1060, 0);
   line.addColorStop(0, 'rgba(221,167,43,0)'); line.addColorStop(.2, theme.gold); line.addColorStop(.8, theme.gold); line.addColorStop(1, 'rgba(221,167,43,0)');
@@ -495,7 +495,7 @@ function drawThaiRosette(x, y, scale = 1) {
 
 function drawThaiTitleText() {
   const text = 'ขออนุโมทนาบุญ';
-  const size = fitText(text, 505, 68, 50, '700', 1);
+  const size = fitText(text, 505, 72, 52, '700');
   const gold = ctx.createLinearGradient(0, 930, 0, 1005);
   if (state.template === 'royal') {
     gold.addColorStop(0, '#8f4b82');
@@ -509,7 +509,7 @@ function drawThaiTitleText() {
   ctx.save();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.font = canvasFont('700', size, 1);
+  ctx.font = canvasFont('700', size);
   ctx.lineJoin = 'round';
   ctx.shadowColor = state.template === 'royal' ? 'rgba(170,127,59,.28)' : 'rgba(54,8,46,.72)';
   ctx.shadowBlur = 7;
@@ -688,14 +688,13 @@ function drawInformation(theme, time = 0) {
 
   const donorColor = state.template === 'royal' ? '#5b2b57' : theme.ink;
   const donorName = state.donor || 'ชื่อเจ้าภาพ / ผู้ร่วมบุญ';
-  const contentScale = Math.min(1.05, selectedFontScale());
-  centerText(donorName, 600, 1058, 940, 56, donorColor, '700', false, contentScale);
+  centerText(donorName, 600, 1063, 1000, 62, donorColor, '700');
 
   const secondaryColor = state.template === 'royal' ? '#86653b' : '#875421';
   const amountColor = state.template === 'royal' ? '#6d2e63' : '#7e276f';
-  centerText('ร่วมทำบุญกฐิน ณ วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, 1122, 1080, 34, state.template === 'royal' ? '#7e3d73' : theme.accent, '700', false, 1);
-  centerText('อ.หล่มสัก จ.เพชรบูรณ์ ในวันที่ ๑๖ พฤศจิกายน ๒๕๖๙', 600, 1164, 1080, 30, secondaryColor, '600', false, 1);
-  centerText(`${thaiNumber(state.amount)} บาท`, 600, 1242, 820, 68, amountColor, '700', state.template === 'royal', contentScale);
+  centerText('ร่วมทำบุญกฐิน ณ วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, 1128, 1100, 38, state.template === 'royal' ? '#7e3d73' : theme.accent, '700');
+  centerText('อ.หล่มสัก จ.เพชรบูรณ์ ในวันที่ ๑๖ พฤศจิกายน ๒๕๖๙', 600, 1173, 1100, 34, secondaryColor, '600');
+  centerText(`${thaiNumber(state.amount)} บาท`, 600, 1250, 820, 72, amountColor, '700', state.template === 'royal');
 
   const divider = ctx.createLinearGradient(215, 0, 985, 0);
   divider.addColorStop(0, 'rgba(218,165,48,0)');
@@ -725,9 +724,9 @@ function drawInformation(theme, time = 0) {
 function drawDonationPanel(theme) {
   const isRoyal = state.template === 'royal';
   const x = 120;
-  const y = 1306;
+  const y = 1310;
   const width = 960;
-  const height = 132;
+  const height = 116;
 
   ctx.save();
   const panel = ctx.createLinearGradient(0, y, 0, y + height);
@@ -771,9 +770,9 @@ function drawDonationPanel(theme) {
   const headingColor = isRoyal ? '#713568' : '#7b286f';
   const detailColor = isRoyal ? '#655260' : '#62445f';
   const accountColor = isRoyal ? '#5b2854' : '#6f1f68';
-  centerText('ร่วมทำบุญออนไลน์ | Online Donation', 600, 1333, 820, 27, headingColor, '700', false, 1);
-  centerText('ธนาคารทหารไทยธนชาต (ttb)  •  ชื่อบัญชี: มจร. วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, 1372, 880, 22, detailColor, '600', false, 1);
-  centerText('เลขที่บัญชี / Account No.  356-2-20222-2', 600, 1411, 820, 31, accountColor, '700', false, 1);
+  centerText('ร่วมทำบุญออนไลน์ | Online Donation', 600, 1337, 820, 32, headingColor, '700');
+  centerText('ธนาคารทหารไทยธนชาต (ttb)  •  ชื่อบัญชี: มจร. วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, 1372, 880, 25, detailColor, '600');
+  centerText('เลขที่บัญชี / Account No.  356-2-20222-2', 600, 1407, 820, 36, accountColor, '700');
 }
 
 function drawGlow() {
