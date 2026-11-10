@@ -44,6 +44,8 @@ const backgroundImage = new Image();
 backgroundImage.src = './assets/luxury_buddhist_background_v2.png';
 const foregroundImage = new Image();
 foregroundImage.src = './assets/ceremonial_offering_foreground_v4.png';
+const campusBuildingImage = new Image();
+campusBuildingImage.src = './assets/campus_building_v1.png';
 const titleFrameImage = new Image();
 titleFrameImage.src = './assets/ornate_thai_title_frame_v2.png';
 const portraitFrameImage = new Image();
@@ -60,7 +62,8 @@ const fontStacks = {
 const themes = {
   classic: { ink: '#702269', accent: '#9e318d', gold: '#e1ad3d', pale: '#fff7f3', panel: '#fff8f5' },
   dawn: { ink: '#704724', accent: '#a76542', gold: '#d59a2f', pale: '#fffaf0', panel: '#fffaf2' },
-  royal: { ink: '#5b2b57', accent: '#7e3d73', gold: '#d8b56a', pale: '#fffefb', panel: '#fffaf3' }
+  royal: { ink: '#5b2b57', accent: '#7e3d73', gold: '#d8b56a', pale: '#fffefb', panel: '#fffaf3' },
+  campus: { ink: '#702269', accent: '#9a3a88', gold: '#dfa938', pale: '#fff8fa', panel: '#fff7f5' }
 };
 
 function toast(message) {
@@ -97,13 +100,20 @@ function syncForm() {
   $('zoomValue').value = `${Math.round(state.zoom * 100)}%`;
   $('sparkleValue').value = `${state.sparkle}%`;
   $('glowValue').value = `${state.glow}%`;
-  $('photoTools').hidden = !state.photoData;
+  const isCampus = state.template === 'campus';
+  $('photoSectionHeading').hidden = false;
+  $('photoSectionTitle').textContent = isCampus ? 'องค์ประกอบภาพ' : 'ภาพเจ้าภาพ';
+  $('photoUpload').hidden = isCampus;
+  $('photoTools').hidden = isCampus || !state.photoData;
+  $('noPhotoRow').hidden = isCampus;
+  $('campusPhotoNote').hidden = !isCampus;
+  $('photo').disabled = isCampus;
   document.querySelectorAll('.template-card').forEach(button => {
     const selected = button.dataset.template === state.template;
     button.classList.toggle('active', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
-  canvas.classList.toggle('drag-ready', Boolean(photoImage && !state.noPhoto));
+  canvas.classList.toggle('drag-ready', Boolean(photoImage && !state.noPhoto && !isCampus));
 }
 
 function scheduleAutoSave() {
@@ -239,6 +249,12 @@ function drawCustomBackground(type) {
     gradient.addColorStop(.56, '#f8f2e9');
     gradient.addColorStop(.78, '#fffafd');
     gradient.addColorStop(1, '#f3e8dc');
+  } else if (type === 'campus') {
+    gradient.addColorStop(0, '#d9b9ee');
+    gradient.addColorStop(.24, '#f3d5ef');
+    gradient.addColorStop(.53, '#fff4eb');
+    gradient.addColorStop(.78, '#f9dce8');
+    gradient.addColorStop(1, '#f1c9df');
   } else {
     gradient.addColorStop(0, '#21143d');
     gradient.addColorStop(.4, '#4a2259');
@@ -254,7 +270,7 @@ function drawCustomBackground(type) {
     const y = 90 + (i * 211) % 830;
     const r = 85 + (i % 4) * 38;
     const cloud = ctx.createRadialGradient(x, y, 0, x, y, r);
-    cloud.addColorStop(0, type === 'dawn' ? 'rgba(255,255,255,.38)' : type === 'royal' ? 'rgba(255,255,255,.78)' : 'rgba(213,167,225,.12)');
+    cloud.addColorStop(0, type === 'dawn' ? 'rgba(255,255,255,.38)' : type === 'royal' ? 'rgba(255,255,255,.78)' : type === 'campus' ? 'rgba(255,255,255,.58)' : 'rgba(213,167,225,.12)');
     cloud.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = cloud;
     ctx.fillRect(x - r, y - r, r * 2, r * 2);
@@ -263,7 +279,7 @@ function drawCustomBackground(type) {
   for (let i = 0; i < 22; i++) {
     ctx.rotate(Math.PI * 2 / 22);
     const ray = ctx.createLinearGradient(0, 0, 0, -620);
-    ray.addColorStop(0, type === 'dawn' ? 'rgba(236,181,63,.13)' : type === 'royal' ? 'rgba(210,175,102,.085)' : 'rgba(255,213,105,.11)');
+    ray.addColorStop(0, type === 'dawn' ? 'rgba(236,181,63,.13)' : type === 'royal' ? 'rgba(210,175,102,.085)' : type === 'campus' ? 'rgba(255,220,142,.16)' : 'rgba(255,213,105,.11)');
     ray.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = ray;
     ctx.beginPath();
@@ -406,6 +422,97 @@ function drawOffering() {
   ctx.shadowBlur = 22;
   ctx.shadowOffsetY = 4;
   ctx.drawImage(foregroundImage, (W - width) / 2, 600, width, height);
+  ctx.restore();
+}
+
+function drawCampusBackdrop() {
+  if (!campusBuildingImage.naturalWidth) return;
+  ctx.save();
+  roundedPath(62, 154, 1076, 388, 80);
+  ctx.clip();
+  ctx.globalAlpha = .28;
+  ctx.filter = 'saturate(.72) sepia(.12) brightness(1.12)';
+  drawCover(campusBuildingImage, 62, 154, 1076, 388);
+  ctx.filter = 'none';
+  const veil = ctx.createLinearGradient(0, 154, 0, 542);
+  veil.addColorStop(0, 'rgba(248,220,241,.48)');
+  veil.addColorStop(.30, 'rgba(255,245,231,.08)');
+  veil.addColorStop(.68, 'rgba(255,242,231,.12)');
+  veil.addColorStop(1, 'rgba(255,242,238,.92)');
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = veil;
+  ctx.fillRect(62, 154, 1076, 388);
+  const sideFade = ctx.createLinearGradient(62, 0, 1138, 0);
+  sideFade.addColorStop(0, 'rgba(241,207,233,.92)');
+  sideFade.addColorStop(.12, 'rgba(255,244,238,.14)');
+  sideFade.addColorStop(.88, 'rgba(255,244,238,.14)');
+  sideFade.addColorStop(1, 'rgba(241,207,233,.92)');
+  ctx.fillStyle = sideFade;
+  ctx.fillRect(62, 154, 1076, 388);
+  ctx.restore();
+}
+
+function drawCampusOffering() {
+  if (!foregroundImage.naturalWidth) return;
+  const width = 825;
+  const height = width * foregroundImage.naturalHeight / foregroundImage.naturalWidth;
+  ctx.save();
+  ctx.globalAlpha = .97;
+  ctx.shadowColor = 'rgba(203,132,85,.24)';
+  ctx.shadowBlur = 22;
+  ctx.shadowOffsetY = 7;
+  ctx.drawImage(foregroundImage, (W - width) / 2, 375, width, height);
+  ctx.restore();
+}
+
+function drawCampusHaloOrnament() {
+  ctx.save();
+  const ring = ctx.createLinearGradient(100, 0, 1100, 0);
+  ring.addColorStop(0, 'rgba(255,255,255,0)');
+  ring.addColorStop(.18, 'rgba(255,239,177,.86)');
+  ring.addColorStop(.5, '#e7ae34');
+  ring.addColorStop(.82, 'rgba(255,239,177,.86)');
+  ring.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.strokeStyle = ring;
+  ctx.lineWidth = 2.2;
+  ctx.shadowColor = 'rgba(255,211,116,.58)';
+  ctx.shadowBlur = 13;
+  ctx.beginPath(); ctx.ellipse(600, 664, 500, 54, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = .62;
+  ctx.lineWidth = 1.1;
+  ctx.beginPath(); ctx.ellipse(600, 664, 454, 39, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = 1;
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = '#d69e27';
+  ctx.fillStyle = '#f5c24a';
+  ctx.lineWidth = 3;
+  for (const direction of [-1, 1]) {
+    ctx.save();
+    ctx.translate(600, 672);
+    ctx.scale(direction, 1);
+    ctx.beginPath();
+    ctx.moveTo(22, 0);
+    ctx.bezierCurveTo(78, -32, 116, 25, 172, -5);
+    ctx.bezierCurveTo(142, 29, 104, 12, 78, 8);
+    ctx.bezierCurveTo(118, 39, 156, 21, 205, 6);
+    ctx.stroke();
+    ctx.restore();
+  }
+  ctx.save();
+  ctx.translate(600, 668);
+  for (let i = 0; i < 4; i++) {
+    ctx.save();
+    ctx.rotate(i * Math.PI / 2);
+    ctx.beginPath();
+    ctx.moveTo(0, -5);
+    ctx.bezierCurveTo(-17, -24, -12, -43, 0, -58);
+    ctx.bezierCurveTo(12, -43, 17, -24, 0, -5);
+    ctx.fill(); ctx.stroke();
+    ctx.restore();
+  }
+  ctx.fillStyle = '#fff2a6';
+  ctx.beginPath(); ctx.arc(0, 0, 8, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
   ctx.restore();
 }
 
@@ -671,7 +778,55 @@ function drawThaiTitleBanner(theme, time = 0) {
   ctx.restore();
 }
 
+function drawCampusInformation(theme, time = 0) {
+  const informationGlow = ctx.createRadialGradient(600, 1010, 50, 600, 1010, 620);
+  informationGlow.addColorStop(0, 'rgba(255,255,255,.64)');
+  informationGlow.addColorStop(.64, 'rgba(255,245,246,.36)');
+  informationGlow.addColorStop(1, 'rgba(255,236,244,0)');
+  ctx.fillStyle = informationGlow;
+  ctx.fillRect(0, 700, W, 720);
+
+  ctx.save();
+  ctx.translate(0, -168);
+  drawThaiTitleBanner(theme, time);
+  ctx.restore();
+
+  const donorName = state.donor || 'ชื่อเจ้าภาพ / ผู้ร่วมบุญ';
+  centerText(donorName, 600, 905, 1000, 64, theme.ink, '700');
+  centerText('ร่วมทำบุญกฐิน ณ วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, 976, 1100, 39, theme.accent, '700');
+  centerText('อ.หล่มสัก จ.เพชรบูรณ์ ในวันที่ ๑๖ พฤศจิกายน ๒๕๖๙', 600, 1023, 1100, 35, '#875421', '600');
+  centerText(`${thaiNumber(state.amount)} บาท`, 600, 1112, 820, 74, '#7e276f', '700');
+
+  const divider = ctx.createLinearGradient(205, 0, 995, 0);
+  divider.addColorStop(0, 'rgba(218,165,48,0)');
+  divider.addColorStop(.18, theme.gold);
+  divider.addColorStop(.82, theme.gold);
+  divider.addColorStop(1, 'rgba(218,165,48,0)');
+  ctx.fillStyle = divider;
+  ctx.fillRect(205, 1164, 790, 2);
+  ctx.save(); ctx.translate(600, 1165); ctx.rotate(Math.PI / 4); ctx.fillStyle = theme.gold; ctx.fillRect(-6, -6, 12, 12); ctx.restore();
+
+  drawDonationPanel(theme, 1183);
+
+  const footer = ctx.createLinearGradient(0, 0, W, 0);
+  footer.addColorStop(0, '#812776');
+  footer.addColorStop(.18, '#e0aa35');
+  footer.addColorStop(.5, '#fff0ad');
+  footer.addColorStop(.82, '#e0aa35');
+  footer.addColorStop(1, '#812776');
+  ctx.fillStyle = footer;
+  ctx.beginPath();
+  ctx.moveTo(0, 1468);
+  ctx.bezierCurveTo(180, 1432, 355, 1492, 600, 1468);
+  ctx.bezierCurveTo(845, 1444, 1020, 1492, 1200, 1458);
+  ctx.lineTo(1200, 1500); ctx.lineTo(0, 1500); ctx.closePath(); ctx.fill();
+}
+
 function drawInformation(theme, time = 0) {
+  if (state.template === 'campus') {
+    drawCampusInformation(theme, time);
+    return;
+  }
   // The signature background already has a carefully painted glow and bottom border.
   // Keep that artwork visible; alternate themes still receive a full color panel.
   if (state.template !== 'classic') {
@@ -721,10 +876,10 @@ function drawInformation(theme, time = 0) {
   }
 }
 
-function drawDonationPanel(theme) {
+function drawDonationPanel(theme, panelY = 1310) {
   const isRoyal = state.template === 'royal';
   const x = 120;
-  const y = 1310;
+  const y = panelY;
   const width = 960;
   const height = 116;
 
@@ -770,9 +925,9 @@ function drawDonationPanel(theme) {
   const headingColor = isRoyal ? '#713568' : '#7b286f';
   const detailColor = isRoyal ? '#655260' : '#62445f';
   const accountColor = isRoyal ? '#5b2854' : '#6f1f68';
-  centerText('ร่วมทำบุญออนไลน์ | Online Donation', 600, 1337, 820, 32, headingColor, '700');
-  centerText('ธนาคารทหารไทยธนชาต (ttb)  •  ชื่อบัญชี: มจร. วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, 1372, 880, 25, detailColor, '600');
-  centerText('เลขที่บัญชี / Account No.  356-2-20222-0', 600, 1407, 820, 36, accountColor, '700');
+  centerText('ร่วมทำบุญออนไลน์ | Online Donation', 600, y + 27, 820, 32, headingColor, '700');
+  centerText('ธนาคารทหารไทยธนชาต (ttb)  •  ชื่อบัญชี: มจร. วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', 600, y + 62, 880, 25, detailColor, '600');
+  centerText('เลขที่บัญชี / Account No.  356-2-20222-0', 600, y + 97, 820, 36, accountColor, '700');
 }
 
 function drawGlow() {
@@ -808,10 +963,18 @@ function draw(time = 0) {
   if (state.template === 'classic' && backgroundImage.naturalWidth) drawCover(backgroundImage, 0, 0, W, H);
   else drawCustomBackground(state.template);
   drawHeader(theme);
-  // Radiance belongs behind the real portrait and ceremonial objects.
-  drawGlow();
-  drawPortrait(theme);
-  drawOffering();
+  // The fourth template is deliberately portrait-free and has its own isolated scene.
+  if (state.template === 'campus') {
+    drawGlow();
+    drawCampusBackdrop();
+    drawCampusOffering();
+    drawCampusHaloOrnament();
+  } else {
+    // Radiance belongs behind the real portrait and ceremonial objects.
+    drawGlow();
+    drawPortrait(theme);
+    drawOffering();
+  }
   drawInformation(theme, time);
   // Fine sparkles remain on top without washing out the lotus colors.
   drawSparkles(time);
@@ -927,7 +1090,7 @@ function pointerPosition(event) {
 
 function bindPhotoDragging() {
   canvas.addEventListener('pointerdown', event => {
-    if (!photoImage || state.noPhoto) return;
+    if (!photoImage || state.noPhoto || state.template === 'campus') return;
     const p = pointerPosition(event);
     if (p.x < 330 || p.x > 870 || p.y < 163 || p.y > 588) return;
     dragging = { p, startX: state.photoX, startY: state.photoY };
@@ -1000,6 +1163,7 @@ async function initialize() {
 
   backgroundImage.addEventListener('load', () => draw(0));
   foregroundImage.addEventListener('load', () => draw(0));
+  campusBuildingImage.addEventListener('load', () => draw(0));
   titleFrameImage.addEventListener('load', () => draw(0));
   portraitFrameImage.addEventListener('load', () => draw(0));
   mcuLogoImage.addEventListener('load', () => draw(0));
