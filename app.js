@@ -880,18 +880,18 @@ function drawCampusTemplate(time = 0) {
   ctx.drawImage(getCampusInfoBackdrop(), 0, 840);
 
   const donorName = state.donor || 'ชื่อเจ้าภาพ / ผู้ร่วมบุญ';
-  centerText(donorName, W / 2, 925, 850, 57, '#81236f', '700');
-  centerText('ร่วมทำบุญกฐิน ณ วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', W / 2, 1011, 940, 39, '#9a2f83', '700');
-  centerText('อ.หล่มสัก จ.เพชรบูรณ์ ในวันที่ ๑๖ พฤศจิกายน ๒๕๖๙', W / 2, 1062, 900, 34, '#98511f', '600');
-  centerText(`${thaiNumber(state.amount)} บาท`, W / 2, 1154, 660, 67, '#7b1d70', '700');
+  centerText(donorName, W / 2, 930, 850, 51, '#81236f', '700');
+  centerText('ร่วมทำบุญกฐิน ณ วิทยาลัยสงฆ์พ่อขุนผาเมือง เพชรบูรณ์', W / 2, 1018, 940, 36, '#9a2f83', '700');
+  centerText('อ.หล่มสัก จ.เพชรบูรณ์ ในวันที่ ๑๖ พฤศจิกายน ๒๕๖๙', W / 2, 1068, 900, 32, '#98511f', '600');
+  centerText(`${thaiNumber(state.amount)} บาท`, W / 2, 1162, 660, 60, '#7b1d70', '700');
   const divider = ctx.createLinearGradient(110, 0, 920, 0);
   divider.addColorStop(0, 'rgba(218,165,48,0)');
   divider.addColorStop(.18, '#dda52c');
   divider.addColorStop(.82, '#dda52c');
   divider.addColorStop(1, 'rgba(218,165,48,0)');
   ctx.fillStyle = divider;
-  ctx.fillRect(110, 1218, 810, 2);
-  ctx.save(); ctx.translate(W / 2, 1219); ctx.rotate(Math.PI / 4); ctx.fillStyle = '#dfa52d'; ctx.fillRect(-6, -6, 12, 12); ctx.restore();
+  ctx.fillRect(110, 1228, 810, 2);
+  ctx.save(); ctx.translate(W / 2, 1229); ctx.rotate(Math.PI / 4); ctx.fillStyle = '#dfa52d'; ctx.fillRect(-6, -6, 12, 12); ctx.restore();
 
   // Keep the user-controlled sparkle setting active without changing the
   // composition or the fixed Thai typography in the reference artwork.

@@ -1,4 +1,4 @@
-const CACHE = 'mcu-anumodana-v42';
+const CACHE = 'mcu-anumodana-v43';
 const ASSETS = ['./', './index.html', './style.css', './app.js', './manifest.webmanifest', './assets/luxury_buddhist_background_v2.png', './assets/ceremonial_offering_foreground_v4.png', './assets/campus_template_v4.png', './assets/ornate_thai_title_frame_v2.png', './assets/thai_portrait_frame_v1.png', './assets/mcu_logo.png', './assets/fonts/thsarabunnew-400.woff2', './assets/fonts/thsarabunnew-700.woff2', './assets/fonts/sarabun-400-thai.woff2', './assets/fonts/sarabun-400-latin.woff2', './assets/fonts/sarabun-500-thai.woff2', './assets/fonts/sarabun-500-latin.woff2', './assets/fonts/sarabun-600-thai.woff2', './assets/fonts/sarabun-600-latin.woff2', './assets/fonts/sarabun-700-thai.woff2', './assets/fonts/sarabun-700-latin.woff2'];
 
 self.addEventListener('install', event => {
